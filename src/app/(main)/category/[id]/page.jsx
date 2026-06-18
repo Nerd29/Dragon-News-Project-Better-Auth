@@ -20,7 +20,7 @@ const NewsCategoryPage = async({params}) => {
 
     return (
         <div>
-            <div className="grid grid-cols-15 max-w-7xl mx-auto gap-4 mt-20">
+            <div className="grid grid-cols-15 container mx-auto gap-4 mt-20">
     <div className=" col-span-3">
       <LeftSideBar allCategories={allCategories} activeId={id}></LeftSideBar>
       
