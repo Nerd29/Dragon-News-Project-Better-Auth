@@ -1,10 +1,16 @@
+'use client'
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import user from '@/assets/user.png'
+import userAvatar from '@/assets/user.png'
 import NavLink from './NavLink';
+import { authClient } from '@/lib/auth-client';
 
 const Navbar = () => {
+
+    const { data: session,isPending } = authClient.useSession()
+    const user=session?.user
+    // console.log(session)
     return (
         <div className='flex justify-between container mx-auto mt-5'>
            <div></div>
@@ -16,15 +22,18 @@ const Navbar = () => {
                 <NavLink href='/about'>About</NavLink>
             </li>
             <li>
-                <NavLink href='/carrer'>Carrer</NavLink>
+                <NavLink href='/career'>Career</NavLink>
             </li>
             
            </ul>
 
-           <div className='flex gap-3'>
-            <Image src={user} width={40} height={40} alt='user'></Image> 
-            <button className='btn bg-gray-700 text-white'><Link href="/login">Login</Link></button>          
-            </div>
+           {isPending?(<span className="loading loading-dots loading-md"></span>): user? (<div className='flex gap-3'>
+            <h2>Hello,{user?.name}</h2>
+            <Image src={user?.image || userAvatar} width={40} height={40} alt='User avatar'></Image>
+            <button className='btn bg-gray-700 text-white'onClick={async()=>await authClient.signOut()}>Log-out</button> 
+            </div>)
+            :( <button className='btn bg-gray-700 text-white'><Link href="/login">Login</Link></button> ) 
+            }        
         </div>
     );
 };
